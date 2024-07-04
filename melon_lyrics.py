@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.by import By
-from io import BytesIO
+from webdriver_manager.chrome import ChromeDriverManager
 
 # Selenium 옵션 설정
 chrome_options = Options()
@@ -16,12 +16,11 @@ chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('--disable-gpu')
-chrome_options.add_argument('--remote-debugging-port=9222')
 
-
+@st.cache_data
 def scrape_lyrics(singer):
     # 드라이버 실행
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     song_data = pd.DataFrame()
     
     try:
